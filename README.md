@@ -17,5 +17,6 @@ Na kraju sam napravio RESTful API endpointe za offers i sections kako bih omoguÄ
     - OmoguÄ‡io upload slike
     - Napravio testove
     - Uradio bolju validaciju poslanih podataka
+    - Izradio opciju verifikacije maila
 
 ## Kako instalirati aplikaciju?
