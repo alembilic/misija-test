@@ -10,4 +10,9 @@ class Section extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function offers()
+    {
+        return $this->hasMany('App\Models\Offer');
+    }
 }

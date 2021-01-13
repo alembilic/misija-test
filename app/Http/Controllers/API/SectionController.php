@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SectionResource;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class SectionController extends Controller
 {
@@ -13,9 +16,15 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Section::query();
+
+        if (!empty($request->withSectionCount))
+            if ($request->withSectionCount)
+                $query->withCount('offers');
+
+        return response(['data' => SectionResource::collection($query->paginate(20)), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -26,7 +35,24 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'name' => 'required|max:255',
+            'published' => 'required',
+            'is_on_front' => 'required',
+            'order' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors(), 'Please provide a valid input'], 400);
+        }
+
+        $data['slug'] = Str::slug($request->title, '-');
+
+        $section = Section::create($data);
+
+        return response(['data' => new SectionResource($section), 'message' => 'Created successfully'], 201);
     }
 
     /**
@@ -35,9 +61,13 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show(Section $section, Request $request)
     {
-        //
+        if (!empty($request->withRelationsips))
+            if ($request->withRelationsips)
+                $section = Section::where('id', $section->id)->with('offers.author')->get();
+
+        return response(['data' => new SectionResource($section), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -49,7 +79,24 @@ class SectionController extends Controller
      */
     public function update(Request $request, Section $section)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'name' => 'required|max:255',
+            'published' => 'required',
+            'is_on_front' => 'required',
+            'order' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors(), 'Please provide a valid input'], 400);
+        }
+
+        $data['slug'] = Str::slug($request->title, '-');
+
+        $section->update($data);
+
+        return response(['data' => new SectionResource($section), 'message' => 'Updated successfully'], 200);
     }
 
     /**
@@ -60,6 +107,8 @@ class SectionController extends Controller
      */
     public function destroy(Section $section)
     {
-        //
+        $section->delete();
+
+        return response(['message' => 'Deleted']);
     }
 }

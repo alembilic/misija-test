@@ -99,7 +99,7 @@ class OfferController extends Controller
 
         $data['slug'] = Str::slug($request->title, '-');
 
-        $offer->update($request->all());
+        $offer->update($data);
 
         return response(['data' => new OfferResource($offer), 'message' => 'Updated successfully'], 200);
     }
