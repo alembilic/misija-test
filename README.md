@@ -7,3 +7,5 @@ Na početku sam imao 2 opcije da radim full-stack ili backend. Na backend sam se
 Nakon izrade migracija po dostavljenoj specifikaciji uradio  sam seedere za iste tabele koristeći Faker - PHP biblioteku koja pomaže generisanju podataka.
 Zatim sam kreirao autentifikaciju korisnika koristeći Laravel Passport. To je jedan od klasičnih načina izrade autentifikacije za api endpointe. 
 Na kraju sam napravio RESTful API endpointe za offers i sections kako bih omogućio CRUD operacije zahtjevane zadatkom. Nakon kreiranja endpointa pristupio sam testiranju koristeći Postman. 
+
+## Kako instalirati aplikaciju?
