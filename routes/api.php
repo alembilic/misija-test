@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\OfferController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', 'Api\AuthController@register');
 Route::post('/login', 'Api\AuthController@login');
+
+Route::apiResource('offers', 'Api\OfferController')->middleware('auth:api');
